@@ -1,5 +1,5 @@
 
-
+```
 jewelleryMart
 ├─ .mvn
 │  └─ wrapper
@@ -86,4 +86,4 @@ jewelleryMart
       └─ resources
          ├─ application.properties
          └─ templates
-
+```
