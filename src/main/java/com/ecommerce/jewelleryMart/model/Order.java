@@ -18,6 +18,44 @@ public class Order {
     private Date createdAt;
     private List<Double> grams;
 
+    private String deliveryName;
+    private String deliveryContact;
+    private String deliveryAddress;
+    private String deliveryCity;
+
+    public String getDeliveryName() {
+        return deliveryName;
+    }
+
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName;
+    }
+
+    public String getDeliveryContact() {
+        return deliveryContact;
+    }
+
+    public void setDeliveryContact(String deliveryContact) {
+        this.deliveryContact = deliveryContact;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public String getDeliveryCity() {
+        return deliveryCity;
+    }
+
+    public void setDeliveryCity(String deliveryCity) {
+        this.deliveryCity = deliveryCity;
+    }
+
+
     public List<Double> getGrams() {
         return grams;
     }

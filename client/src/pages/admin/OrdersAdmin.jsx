@@ -190,7 +190,7 @@ const OrdersAdmin = () => {
                   selectedOrder.productIds.map((pid, idx) => (
                     <li key={pid} className="mb-1">
                       <span className="font-mono text-sm bg-gray-100 p-1 rounded">{pid}</span>
-                      &times; <span className="font-bold">{selectedOrder.quantities[idx]}</span>
+                      × <span className="font-bold">{selectedOrder.quantities[idx]}</span>
                       {selectedOrder.grams && selectedOrder.grams[idx] != null && (
                         <>
                           {" "}({selectedOrder.grams[idx]}g)
@@ -202,6 +202,11 @@ const OrdersAdmin = () => {
                   <li>No products in this order.</li>
                 )}
               </ul>
+              <h4 className="text-lg font-medium text-gray-800 mb-2">Delivery Details:</h4>
+              <p className="mb-2"><strong className="font-medium text-gray-700">Name:</strong> <span className="text-gray-900">{selectedOrder.deliveryName || 'N/A'}</span></p>
+              <p className="mb-2"><strong className="font-medium text-gray-700">Contact:</strong> <span className="text-gray-900">{selectedOrder.deliveryContact || 'N/A'}</span></p>
+              <p className="mb-2"><strong className="font-medium text-gray-700">Address:</strong> <span className="text-gray-900">{selectedOrder.deliveryAddress || 'N/A'}</span></p>
+              <p className="mb-4"><strong className="font-medium text-gray-700">City:</strong> <span className="text-gray-900">{selectedOrder.deliveryCity || 'N/A'}</span></p>
 
               <div className="text-right">
                 <button
@@ -218,7 +223,7 @@ const OrdersAdmin = () => {
         {/* Custom Alert Modal */}
         {showAlertModal && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full transform transition-all scale-100 opacity-100 text-center">
+            <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full transform transition-all scale-100 opacity-100">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Notification</h3>
               <p className="text-gray-700 mb-6">{alertMessage}</p>
               <button
@@ -234,7 +239,7 @@ const OrdersAdmin = () => {
         {/* Custom Confirmation Modal */}
         {showConfirmModal && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full transform transition-all scale-100 opacity-100 text-center">
+            <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full transform transition-all scale-100 opacity-100">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Confirmation</h3>
               <p className="text-gray-700 mb-6">{confirmMessage}</p>
               <div className="flex justify-center space-x-4">

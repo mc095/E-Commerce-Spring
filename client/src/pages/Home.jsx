@@ -200,20 +200,25 @@ const App = () => {
     }
   };
 
-  const handleAddToCart = async (productId, productName) => {
+  const handleAddToCart = async (product, productName) => {
     const userId = localStorage.getItem("userEmail");
     if (!userId) {
       setToastMsg("Please log in to add items to cart.");
       setTimeout(() => {
         setToastMsg("Redirecting to login...");
+        window.location.href = "/login"; // Redirect to login page
       }, 1000);
       return;
     }
 
     try {
-      const res = await fetch(`/api/cart/add?userId=${userId}&productId=${productId}`, {
-        method: "POST",
-      });
+      const res = await fetch(
+        `/api/cart/add?userId=${encodeURIComponent(userId)}&productId=${product.id || product._id}&quantity=1&grams=${product.grams || 1}&finalPrice=${product.price}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (!res.ok) throw new Error("Add to cart failed.");
       setToastMsg(`"${productName}" added to cart successfully!`);
@@ -480,7 +485,7 @@ const App = () => {
                     <span key={i} className="block">{word}</span>
                   ))}
                 </h2>
-                <button className="border-2 border-white px-8 py-3 text-sm tracking-wider hover:bg-white hover:text-gray-900 transition-all duration-300 mt-8">
+                <button className="border-2 border-white px-8 py-3 text-sm tracking-wider hover:bg-white hover:text-gray-900 Corridor-all duration-300 mt-8">
                   SHOP NOW
                 </button>
               </div>
@@ -501,7 +506,7 @@ const App = () => {
                   backgroundImage: `url('https://images.unsplash.com/photo-1611652022419-a9419f74343d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80')`,
                 }}
               >
-                <div className="absolute inset-0 bg-black/10"></div>
+
                 <div className="absolute inset-0 flex flex-col justify-center items-start p-8 text-gray-900">
                   <p className="text-xs tracking-[0.3em] mb-3 opacity-70">{categories[1].subtitle}</p>
                   <h3 className="text-4xl font-light mb-4 leading-tight">
@@ -635,7 +640,7 @@ const App = () => {
                       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <button
-                          onClick={() => handleAddToCart(product.id || product._id, product.name)}
+                          onClick={() => handleAddToCart(product, product.name)}
                           className="bg-white text-gray-900 px-6 py-2 text-sm font-medium tracking-wider hover:bg-gray-100 transition-colors duration-200"
                         >
                           ADD TO CART
@@ -650,7 +655,7 @@ const App = () => {
                       >
                         {product.name}
                       </h3>
-                       <p className="text-xs text-gray-500">Weight: {product.weight}g</p>
+                      <p className="text-xs text-gray-500">Weight: {product.weight}g</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <span className="text-xl font-medium text-gray-900">₹{product.price?.toLocaleString()} <span className="text-xs ml-2 text-gray-500">per gram</span></span>

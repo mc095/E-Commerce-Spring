@@ -7,7 +7,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [profilePic, setProfilePic] = useState(null);
+  const [profilePic, setProfilePic] = useState('');
   const [profilePicPreview, setProfilePicPreview] = useState('');
   const [toastMsg, setToastMsg] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -18,7 +18,6 @@ const Signup = () => {
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
   const searchRef = useRef(null);
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (toastMsg) {
@@ -73,29 +72,18 @@ const Signup = () => {
     fetchCart();
   }, [email]);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Validate file type and size
-    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (!validTypes.includes(file.type)) {
-      setToastMsg('Please upload a JPEG, JPG, or PNG image.');
+  const handleProfilePicChange = (e) => {
+    const url = e.target.value;
+    setProfilePic(url);
+    // Basic URL validation for image
+    const isValidImageUrl = url.match(/\.(jpeg|jpg|png)$/i) && url.startsWith('http');
+    setProfilePicPreview(isValidImageUrl ? url : '');
+    if (url && !isValidImageUrl) {
+      setToastMsg('Please enter a valid image URL (e.g., ending with .jpg, .jpeg, or .png).');
       setIsSuccess(false);
-      return;
+    } else {
+      setToastMsg('');
     }
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
-      setToastMsg('Image size must be less than 5MB.');
-      setIsSuccess(false);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfilePic(reader.result); // Base64 string
-      setProfilePicPreview(reader.result); // Preview
-    };
-    reader.readAsDataURL(file);
   };
 
   const handleSignup = async (e) => {
@@ -110,6 +98,11 @@ const Signup = () => {
     }
     if (password !== confirmPassword) {
       setToastMsg('Passwords do not match.');
+      setIsSuccess(false);
+      return;
+    }
+    if (profilePic && !profilePic.match(/\.(jpeg|jpg|png)$/i)) {
+      setToastMsg('Profile picture must be a valid image URL (e.g., ending with .jpg, .jpeg, or .png).');
       setIsSuccess(false);
       return;
     }
@@ -130,9 +123,8 @@ const Signup = () => {
         setPassword('');
         setConfirmPassword('');
         setUsername('');
-        setProfilePic(null);
+        setProfilePic('');
         setProfilePicPreview('');
-        if (fileInputRef.current) fileInputRef.current.value = '';
         setTimeout(() => navigate('/login'), 2000);
       } else {
         setToastMsg(data.error || 'Signup failed. Please try again.');
@@ -159,7 +151,7 @@ const Signup = () => {
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-amber-50/30">
       {/* Navbar */}
       <nav className="bg-white/95 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="asked-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between py-3 text-sm border-b border-gray-50">
             <div className="flex items-center text-gray-600">
               <Heart className="w-4 h-4 mr-2 text-amber-600" />
@@ -387,14 +379,14 @@ const Signup = () => {
                 </svg>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Profile Picture (Optional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Profile Picture URL (Optional)</label>
                 <input
-                  type="file"
-                  accept="image/jpeg,image/jpg,image/png"
-                  onChange={handleFileChange}
-                  ref={fileInputRef}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-700"
-                  aria-label="Profile Picture"
+                  type="text"
+                  value={profilePic}
+                  onChange={handleProfilePicChange}
+                  placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#EBD6FB] text-gray-700 transition-all duration-300"
+                  aria-label="Profile Picture URL"
                 />
                 {profilePicPreview && (
                   <div className="mt-4">
@@ -402,6 +394,11 @@ const Signup = () => {
                       src={profilePicPreview}
                       alt="Profile Preview"
                       className="w-24 h-24 object-cover rounded-full border border-gray-200"
+                      onError={() => {
+                        setToastMsg('Invalid image URL. Please enter a valid image URL.');
+                        setIsSuccess(false);
+                        setProfilePicPreview('');
+                      }}
                     />
                   </div>
                 )}

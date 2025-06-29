@@ -159,6 +159,12 @@ public class CheckoutController {
 
         Order order = new Order(userId, new ArrayList<>(productIds), new ArrayList<>(quantities), totalAmount);
         order.setGrams(new ArrayList<>(grams));
+
+        order.setDeliveryName(name);
+        order.setDeliveryContact(contact);
+        order.setDeliveryAddress(address);
+        order.setDeliveryCity(city);
+
         Order savedOrder = orderRepository.save(order);
 
 

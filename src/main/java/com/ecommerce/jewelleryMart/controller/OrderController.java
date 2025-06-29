@@ -30,6 +30,13 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+        Order savedOrder = orderRepository.save(order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
+    }
+
+
     @DeleteMapping("/{orderId}")
     public ResponseEntity<String> deleteOrder(@PathVariable String orderId) {
         if (!orderRepository.existsById(orderId)) {

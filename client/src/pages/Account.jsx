@@ -418,8 +418,12 @@ const Account = () => {
             </div>
           )}
           <div className="flex items-center mb-6 space-x-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-              <User className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 rounded-full overflow-hidden">
+              <img
+                src={userData.profilePic || 'https://via.placeholder.com/64'}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h2 className="text-xl font-medium text-gray-900">{userData.username}</h2>
