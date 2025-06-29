@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList; // Import for ArrayList initialization
+import java.util.ArrayList;
 
 @Document(collection = "orders")
 public class Order {
