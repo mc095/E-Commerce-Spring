@@ -64,8 +64,9 @@ https://excalidraw.com/#json=lq59ZBAmcw1TmIV13AqOS,rwsqV-A8kB9kPPBTrtihyg
 
 * **Java Development Kit (JDK)**: Version 17 or higher.
 * **Node.js**: LTS version recommended.
-* **npm** or **Yarn**: Package managers for Node.js (npm comes with Node.js).
-* **Your chosen database**: (e.g., MySQL, PostgreSQL) and its client/server.
+* **npm** : Package managers for Node.js (npm comes with Node.js).
+* MongoDB
+* Maven
 
 ### Installation
 
