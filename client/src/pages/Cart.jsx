@@ -353,7 +353,7 @@ const Cart = () => {
               ACCOUNT
             </a>
             <a href="/contact" className="text-gray-700 hover:text-amber-600 transition-colors font-medium tracking-wide">
-              CONTACT
+               CUSTOM JEWELRY
             </a>
           </div>
 
@@ -373,7 +373,7 @@ const Cart = () => {
                   ACCOUNT
                 </a>
                 <a href="/contact" className="text-gray-700 hover:text-amber-600 transition-colors font-medium">
-                  CONTACT
+                  CUSTOM JEWELRY
                 </a>
                 <div className="pt-4 border-t border-gray-100">
                   <button className="text-sm text-gray-600 hover:text-amber-600 transition-colors block mb-2">

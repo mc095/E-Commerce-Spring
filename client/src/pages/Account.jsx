@@ -335,7 +335,7 @@ const Account = () => {
               ACCOUNT
             </a>
             <a href="/contact" className="text-gray-700 hover:text-amber-600 transition-colors font-medium tracking-wide">
-              CONTACT
+              CUSTOM JEWELRY
             </a>
           </div>
           {mobileMenuOpen && (

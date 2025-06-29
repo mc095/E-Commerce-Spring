@@ -322,7 +322,7 @@ const Collections = () => {
               ACCOUNT
             </a>
             <a href="/contact" className="text-gray-700 hover:text-amber-600 transition-colors font-medium">
-              CONTACT
+               CUSTOM JEWELRY
             </a>
           </div>
 
@@ -601,7 +601,7 @@ const Collections = () => {
               <ul className="space-y-3 mb-6">
                 <li>
                   <a href="/contact" className="text-gray-300 hover:text-amber-400 transition-colors">
-                    Contact Us
+                    CUSTOM JEWELRY
                   </a>
                 </li>
                 <li>

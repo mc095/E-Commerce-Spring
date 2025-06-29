@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Phone, ArrowLeft, User, MessageSquare, Heart, Search, ShoppingBag, Menu, X, Image as ImageIcon } from 'lucide-react';
+import { Mail, Phone, ArrowLeft, User, MessageSquare, Heart, Search, ShoppingBag, Menu, X } from 'lucide-react';
 
 const Contact = () => {
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ const Contact = () => {
     email: '',
     jewelryType: '',
     description: '',
-    referenceImages: [],
   });
   const [errors, setErrors] = useState({});
   const [toastMsg, setToastMsg] = useState('');
@@ -43,7 +42,7 @@ const Contact = () => {
       setIsSuccess(false);
       return;
     }
-    setFormData({ ...formData, referenceImages: validFiles });
+    setFormData({ ...formData });
   };
 
   const handleSendRequest = (e) => {
@@ -55,7 +54,6 @@ const Contact = () => {
       setIsSuccess(false);
       return;
     }
-
     // Create a formatted email body
     const subject = encodeURIComponent(`Custom Jewelry Request from ${formData.name || 'Customer'}`);
     const body = encodeURIComponent(
@@ -65,21 +63,17 @@ const Contact = () => {
       `Email: ${formData.email || 'Not provided'}\n` +
       `Jewelry Type: ${formData.jewelryType}\n` +
       `Description:\n${formData.description}\n\n` +
-      `Note: Reference images are attached (if any).\n\n` +
       `Best regards,\n${formData.name || 'Anonymous'}`
     );
-
     // Open mailto link
     const mailtoLink = `mailto:hello@katenkelly.com?subject=${subject}&body=${body}`;
     window.location.href = mailtoLink;
-
     // Reset form
     setFormData({
       name: '',
       email: '',
       jewelryType: '',
       description: '',
-      referenceImages: [],
     });
     if (fileInputRef.current) fileInputRef.current.value = '';
     setErrors({});
@@ -110,7 +104,6 @@ const Contact = () => {
               <span className="sm:hidden">Call Us</span>
             </div>
           </div>
-
           <div className="flex items-center justify-between py-6">
             <div className="flex items-center">
               <button
@@ -121,7 +114,6 @@ const Contact = () => {
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
               </button>
             </div>
-
             <div className="absolute left-1/2 transform -translate-x-1/2">
               <a
                 href="/"
@@ -130,7 +122,6 @@ const Contact = () => {
                 KATENKELLY
               </a>
             </div>
-
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-4">
                 <a href="/login" className="text-sm text-gray-600 hover:text-amber-600 transition-colors">
@@ -187,7 +178,6 @@ const Contact = () => {
               </div>
             </div>
           </div>
-
           <div className="hidden md:flex items-center justify-center space-x-12 py-4 border-t border-gray-50">
             <a href="/" className="text-gray-700 hover:text-amber-600 transition-colors font-medium tracking-wide">
               HOME
@@ -212,7 +202,6 @@ const Contact = () => {
               CUSTOM JEWELRY
             </a>
           </div>
-
           {mobileMenuOpen && (
             <div className="md:hidden border-t border-gray-50 py-4">
               <div className="flex flex-col space-y-4">
@@ -256,7 +245,6 @@ const Contact = () => {
             Create a one-of-a-kind piece that reflects your unique style. Share your vision, and our artisans will bring it to life with exceptional craftsmanship.
           </p>
         </div>
-
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 max-w-3xl mx-auto w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Custom Jewelry Form */}
@@ -333,33 +321,14 @@ const Contact = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Reference Images (Optional)</label>
-                  <div className="relative">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      multiple
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="w-full text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-amber-50 file:text-amber-600 file:hover:bg-amber-100 file:transition-colors file:cursor-pointer"
-                      aria-label="Upload reference images"
-                    />
-                    {formData.referenceImages.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {formData.referenceImages.map((file, index) => (
-                          <span key={index} className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">{file.name}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-3 px-6 rounded-xl font-medium tracking-wider hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    aria-label="Submit custom jewelry request"
+                  >
+                    Submit Request
+                  </button>
                 </div>
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-3 px-6 rounded-xl font-medium tracking-wider hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                  aria-label="Submit custom jewelry request"
-                >
-                  Submit Request
-                </button>
               </form>
             </div>
 
@@ -409,7 +378,6 @@ const Contact = () => {
                 </p>
               </div>
             </div>
-
             <div>
               <h4 className="text-lg font-medium mb-6 tracking-wide">Quick Links</h4>
               <ul className="space-y-3">
@@ -419,7 +387,6 @@ const Contact = () => {
                 <li><a href="/care-guide" className="text-gray-300 hover:text-amber-400 transition-colors">Care Guide</a></li>
               </ul>
             </div>
-
             <div>
               <h4 className="text-lg font-medium mb-6 tracking-wide">Customer Care</h4>
               <ul className="space-y-3 mb-6">
@@ -428,7 +395,6 @@ const Contact = () => {
                 <li><a href="/returns" className="text-gray-300 hover:text-amber-400 transition-colors">Returns</a></li>
                 <li><a href="/warranty" className="text-gray-300 hover:text-amber-400 transition-colors">Warranty</a></li>
               </ul>
-
               <div className="space-y-2">
                 <div className="flex items-center text-gray-300">
                   <Phone className="w-4 h-4 mr-3" />
@@ -441,7 +407,6 @@ const Contact = () => {
               </div>
             </div>
           </div>
-
           <div className="border-t border-gray-800 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <p className="text-gray-400 text-sm">
@@ -503,11 +468,9 @@ const Contact = () => {
             transform: translateX(0);
           }
         }
-
         .animate-slide-in-right {
           animation: slide-in-right 0.4s ease-out;
         }
-
         select {
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234B5563' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
           background-position: right 0.5rem center;

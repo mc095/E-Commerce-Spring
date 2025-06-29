@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ShoppingBag, Heart, Search, Menu, X, Star, Phone, Mail } from "lucide-react";
+import JewelryChatbot from './JewelryChatbot';
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -97,7 +98,7 @@ const App = () => {
 
   useEffect(() => {
     loadFeaturedProducts();
-    loadTestimonials();
+
     loadProducts();
   }, [search, sort, category, metal, priceRange]);
 
@@ -162,18 +163,6 @@ const App = () => {
     }
   };
 
-  const loadTestimonials = async () => {
-    try {
-      const res = await fetch('/api/testimonials');
-      if (res.ok) {
-        const data = await res.json();
-        setTestimonials(data);
-      }
-    } catch (err) {
-      console.error('Failed to load testimonials:', err);
-      setTestimonials([]);
-    }
-  };
 
   const loadProducts = async () => {
     let url = `/api/products?`;
@@ -379,7 +368,7 @@ const App = () => {
               CART
             </a>
             <a href="/account" className="text-gray-700 hover:text-amber-600 transition-colors font-medium">ACCOUNT</a>
-            <a href="/contact" className="text-gray-700 hover:text-amber-600 transition-colors font-medium">CONTACT</a>
+            <a href="/contact" className="text-gray-700 hover:text-amber-600 transition-colors font-medium">CUSTOM JEWELRY</a>
           </div>
 
           {/* Mobile Menu */}
@@ -687,58 +676,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Client Testimonials Section */}
-      {testimonials.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 py-20">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-light mb-4 tracking-wide">Stories of Elegance</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Hear from our cherished customers who have made KATENKELLY part of their most precious moments. 
-              Their stories inspire us to create jewelry that transcends time.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {testimonials.slice(0, 4).map((testimonial, index) => (
-              <div key={testimonial.id || testimonial._id} className="group">
-                <div className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-500 border border-gray-100">
-                  <div className="flex items-start space-x-4 mb-6">
-                    <img 
-                      src={testimonial.image || testimonial.avatar || "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"} 
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-amber-200"
-                    />
-                    <div className="flex-1">
-                      <h4 className="text-lg font-medium text-gray-900 mb-1">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-500 mb-2">{testimonial.location}</p>
-                      <div className="flex items-center space-x-1">
-                        {[...Array(testimonial.rating || 5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 text-amber-400 fill-current" />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <blockquote className="text-gray-700 leading-relaxed mb-4 italic">
-                    "{testimonial.text || testimonial.review}"
-                  </blockquote>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-amber-600 font-medium">{testimonial.product}</span>
-                    <Heart className="w-8 h-8 text-amber-200 opacity-50" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <button className="text-sm tracking-wider text-gray-700 hover:text-amber-600 transition-colors border-b border-transparent hover:border-amber-600 pb-1">
-              READ MORE REVIEWS
-            </button>
-          </div>
-        </section>
-      )}
+
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white">
@@ -827,7 +765,7 @@ const App = () => {
           </div>
         </div>
       )}
-
+    <JewelryChatbot />
       <style jsx>{`
         @keyframes slide-in-right {
           from {
