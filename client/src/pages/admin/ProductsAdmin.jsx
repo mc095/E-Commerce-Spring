@@ -11,7 +11,8 @@ const ProductsAdmin = () => {
     category: "",
     metalType: "",
     image: "",
-    description: ""
+    description: "",
+    weight: ""
   });
 
   // Fetch products
@@ -22,6 +23,7 @@ const ProductsAdmin = () => {
         const res = await fetch('/api/products');
         if (!res.ok) throw new Error('Failed to load products');
         const data = await res.json();
+        console.log('Fetched products:', data); // Debug: Log fetched products
         setProducts(data);
       } catch (err) {
         setError(err.message);
@@ -32,6 +34,11 @@ const ProductsAdmin = () => {
     fetchProducts();
   }, []);
 
+  // Helper function to get product ID (handles both _id and id)
+  const getProductId = (product) => {
+    return product._id || product.id;
+  };
+
   const handleDelete = async (productId) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
 
@@ -40,7 +47,7 @@ const ProductsAdmin = () => {
         method: 'DELETE'
       });
       if (res.ok) {
-        setProducts(products.filter(p => (p.id || p._id) !== productId));
+        setProducts(products.filter(p => getProductId(p) !== productId));
         alert('Product deleted successfully');
       } else {
         throw new Error('Failed to delete');
@@ -51,25 +58,36 @@ const ProductsAdmin = () => {
   };
 
   const handleCreate = async () => {
-    if (!newProduct.name || !newProduct.price) {
-      alert('Name and price are required');
+    if (!newProduct.name || !newProduct.price || !newProduct.weight) {
+      alert('Name, price, and weight are required');
+      return;
+    }
+
+    const parsedPrice = parseFloat(newProduct.price);
+    const parsedWeight = parseFloat(newProduct.weight);
+    if (isNaN(parsedPrice) || isNaN(parsedWeight) || parsedPrice <= 0 || parsedWeight <= 0) {
+      alert('Price and weight must be valid positive numbers');
       return;
     }
 
     try {
       setIsLoading(true);
+      const requestBody = {
+        ...newProduct,
+        price: parsedPrice,
+        weight: parsedWeight
+      };
+      console.log('Creating product:', requestBody); // Debug: Log request body
       const res = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...newProduct,
-          price: parseFloat(newProduct.price)
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!res.ok) throw new Error('Failed to create product');
 
       const createdProduct = await res.json();
+      console.log('Created product:', createdProduct); // Debug: Log response
       setProducts([...products, createdProduct]);
       setNewProduct({
         name: "",
@@ -77,7 +95,8 @@ const ProductsAdmin = () => {
         category: "",
         metalType: "",
         image: "",
-        description: ""
+        description: "",
+        weight: ""
       });
       alert('Product created successfully');
     } catch (err) {
@@ -88,28 +107,46 @@ const ProductsAdmin = () => {
   };
 
   const handleUpdate = async () => {
-    if (!editProduct?.name || !editProduct?.price) {
-      alert('Name and price are required');
+    if (!editProduct?.name || !editProduct?.price || !editProduct?.weight) {
+      alert('Name, price, and weight are required');
+      return;
+    }
+
+    const parsedPrice = parseFloat(editProduct.price);
+    const parsedWeight = parseFloat(editProduct.weight);
+    if (isNaN(parsedPrice) || isNaN(parsedWeight) || parsedPrice <= 0 || parsedWeight <= 0) {
+      alert('Price and weight must be valid positive numbers');
+      return;
+    }
+
+    // Get the correct product ID
+    const productId = getProductId(editProduct);
+    if (!productId) {
+      alert('Product ID not found');
       return;
     }
 
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/products/${editProduct.id || editProduct._id}`, {
+      const requestBody = {
+        ...editProduct,
+        price: parsedPrice,
+        weight: parsedWeight
+      };
+      console.log('Updating product:', requestBody); // Debug: Log request body
+      console.log('Product ID:', productId); // Debug: Log product ID
+
+      const res = await fetch(`/api/products/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...editProduct,
-          price: parseFloat(editProduct.price)
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!res.ok) throw new Error('Failed to update product');
 
       const updatedProduct = await res.json();
-      setProducts(products.map(p =>
-        (p.id || p._id) === (editProduct.id || editProduct._id) ? updatedProduct : p
-      ));
+      console.log('Updated product:', updatedProduct); // Debug: Log response
+      setProducts(products.map(p => getProductId(p) === productId ? updatedProduct : p));
       setEditProduct(null);
       alert('Product updated successfully');
     } catch (err) {
@@ -132,6 +169,7 @@ const ProductsAdmin = () => {
             <tr style={{ backgroundColor: '#f5f5f5' }}>
               <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Name</th>
               <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Price per gram</th>
+              <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Weight (g)</th>
               <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Metal</th>
               <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Category</th>
               <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Actions</th>
@@ -139,14 +177,19 @@ const ProductsAdmin = () => {
           </thead>
           <tbody>
             {products.map(product => (
-              <tr key={product.id || product._id} style={{ borderBottom: '1px solid #ddd' }}>
+              <tr key={getProductId(product)} style={{ borderBottom: '1px solid #ddd' }}>
                 <td style={{ padding: '12px' }}>{product.name}</td>
                 <td style={{ padding: '12px' }}>₹{product.price?.toFixed(2)}</td>
+                <td style={{ padding: '12px' }}>{product.weight?.toFixed(2) || '-'}</td>
                 <td style={{ padding: '12px' }}>{product.metalType || '-'}</td>
                 <td style={{ padding: '12px' }}>{product.category || '-'}</td>
                 <td style={{ padding: '12px' }}>
                   <button
-                    onClick={() => setEditProduct({ ...product })}
+                    onClick={() => setEditProduct({
+                      ...product,
+                      price: String(product.price),
+                      weight: String(product.weight)
+                    })}
                     style={{
                       padding: '6px 12px',
                       marginRight: '5px',
@@ -160,7 +203,7 @@ const ProductsAdmin = () => {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(product.id || product._id)}
+                    onClick={() => handleDelete(getProductId(product))}
                     style={{
                       padding: '6px 12px',
                       backgroundColor: '#f44336',
@@ -209,6 +252,16 @@ const ProductsAdmin = () => {
                 type="number"
                 value={newProduct.price}
                 onChange={e => setNewProduct({ ...newProduct, price: e.target.value })}
+                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Weight (grams):</label>
+              <input
+                type="number"
+                value={newProduct.weight}
+                onChange={e => setNewProduct({ ...newProduct, weight: e.target.value })}
                 style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
               />
             </div>
@@ -293,6 +346,16 @@ const ProductsAdmin = () => {
                   type="number"
                   value={editProduct.price}
                   onChange={e => setEditProduct({ ...editProduct, price: e.target.value })}
+                  style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Weight (grams):</label>
+                <input
+                  type="number"
+                  value={editProduct.weight}
+                  onChange={e => setEditProduct({ ...editProduct, weight: e.target.value })}
                   style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
                 />
               </div>

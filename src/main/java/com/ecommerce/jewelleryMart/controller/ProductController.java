@@ -82,17 +82,24 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product productDetails) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()) {
-            Product existingProduct = optionalProduct.get();
-            existingProduct.setName(productDetails.getName());
-            existingProduct.setPrice(productDetails.getPrice());
-            existingProduct.setCategory(productDetails.getCategory());
-            existingProduct.setMetalType(productDetails.getMetalType());
-            existingProduct.setImage(productDetails.getImage());
-            existingProduct.setDescription(productDetails.getDescription());
-            Product updatedProduct = productRepository.save(existingProduct);
-            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+            Product product = optionalProduct.get();
+
+            // Update ALL fields explicitly
+            product.setName(productDetails.getName());
+            product.setPrice(productDetails.getPrice());
+            product.setCategory(productDetails.getCategory());
+            product.setMetalType(productDetails.getMetalType());
+            product.setImage(productDetails.getImage());
+            product.setDescription(productDetails.getDescription());
+            product.setWeight(productDetails.getWeight()); // EXPLICITLY SET WEIGHT
+
+
+            Product savedProduct = productRepository.save(product);
+
+
+            return ResponseEntity.ok(savedProduct);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
