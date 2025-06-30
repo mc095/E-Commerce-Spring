@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import Login from './pages/Auth/Login';
+import Signup from './pages/Auth/Signup';
 import Account from './pages/Account';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
@@ -12,7 +12,7 @@ import Payment from './pages/Payment';
 import Success from './pages/Success';
 import Collections from './pages/Collections';
 import AdminLayout from './components/AdminLayout';
-import ForgetPassword from './pages/ForgetPassword';
+import ForgetPassword from './pages/Auth/ForgetPassword';
 
 import ProductsAdmin from './pages/admin/ProductsAdmin';
 import OrdersAdmin from './pages/admin/OrdersAdmin';

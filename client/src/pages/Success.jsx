@@ -21,14 +21,12 @@ const Success = () => {
     }
     setInvoice(storedInvoice);
 
-    // Check if total amount is more than 50,000
     if (storedInvoice.totalAmount > 50000) {
       fetch("/api/coupons")
         .then((response) => response.json())
         .then((data) => {
           const randomCoupon = data[Math.floor(Math.random() * data.length)];
-         setCoupon({ code: randomCoupon.code, discountAmount: randomCoupon.discountAmount });
-
+          setCoupon({ code: randomCoupon.code, discountAmount: randomCoupon.discountAmount });
           setShowScratchCard(true);
         })
         .catch((error) => console.error("Error fetching coupons:", error));
@@ -140,9 +138,29 @@ const Success = () => {
         .rotate-y-180 {
           transform: rotateY(180deg);
         }
+        .animate-bounce-in {
+          animation: bounce-in 0.5s ease-out;
+        }
+        @keyframes bounce-in {
+          0% {
+            opacity: 0;
+            transform: scale(0.3);
+          }
+          50% {
+            opacity: 0.5;
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.95);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
       `}</style>
       {/* Main Content */}
-      <div className={`${showScratchCard && !showCoupon ? "blur-sm" : ""} transition-all duration-300`}>
+      <div className={`${showScratchCard && !showCoupon ? "blur-sm" : ""} transition-all duration-300 flex-grow`}>
         <Confetti
           width={window.innerWidth}
           height={window.innerHeight}
@@ -151,22 +169,22 @@ const Success = () => {
           colors={["#d97706", "#1f2937", "#e5e7eb"]}
           recycle={true}
         />
-        <section className="max-w-6xl mx-auto px-6 py-12 flex-grow">
-          <div className="flex items-center mb-8">
+        <section className="max-w-2xl mx-auto px-6 py-8">
+          <div className="text-center mb-6">
             <button
               onClick={handleBack}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors mb-4"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+
             </button>
-            <h1 className="text-4xl md:text-5xl font-light tracking-wide text-gray-900 ml-4">
-              Order Confirmed!
+            <h1 className="text-3xl md:text-4xl font-light tracking-wide text-gray-900">
+              <ArrowLeft className="w-5 h-5 text-gray-600" /> Order Confirmed!
             </h1>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 max-w-3xl mx-auto w-full space-y-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 w-full space-y-4">
             {/* Order Details */}
             <div>
-              <h2 className="text-xl font-medium text-gray-900 mb-4">Order Details</h2>
+              <h2 className="text-lg font-medium text-gray-900 mb-3">Order Details</h2>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex justify-between">
                   <span>Order ID</span>
@@ -203,7 +221,7 @@ const Success = () => {
             </div>
             {/* Items */}
             <div>
-              <h2 className="text-xl font-medium text-gray-900 mb-4">Items</h2>
+              <h2 className="text-lg font-medium text-gray-900 mb-3">Items</h2>
               <div className="space-y-2 text-sm text-gray-600">
                 {(invoice.items || []).map((item, i) => (
                   <div
@@ -225,14 +243,14 @@ const Success = () => {
             <div className="flex justify-end gap-4">
               <button
                 onClick={handleHome}
-                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2.5 px-6 rounded-xl text-sm font-medium hover:from-amber-600 hover:to-amber-700 transition"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2 px-5 rounded-xl text-sm font-medium hover:from-amber-600 hover:to-amber-700 transition"
               >
                 <Home className="w-4 h-4 inline-block mr-2" />
                 Back to Home
               </button>
               <button
                 onClick={handlePrintBill}
-                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2.5 px-6 rounded-xl text-sm font-medium hover:from-amber-600 hover:to-amber-700 transition"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2 px-5 rounded-xl text-sm font-medium hover:from-amber-600 hover:to-amber-700 transition"
               >
                 <Printer className="w-4 h-4 inline-block mr-2" />
                 Print Bill
@@ -248,8 +266,6 @@ const Success = () => {
             <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4 animate-bounce-in">
               <h2 className="text-2xl font-bold text-center text-amber-700 mb-4">Congratulations!</h2>
               <p className="text-center text-gray-600 mb-6">You've won a special discount coupon! Click the card to reveal your code.</p>
-
-              {/* Flip Card */}
               <div className="relative w-full h-48 mb-4 perspective-1000">
                 <div
                   className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${
@@ -257,7 +273,6 @@ const Success = () => {
                   }`}
                   onClick={handleCardFlip}
                 >
-                  {/* Front of Card */}
                   <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg shadow-lg flex items-center justify-center backface-hidden">
                     <div className="text-center text-white">
                       <div className="text-4xl mb-2">🎁</div>
@@ -265,8 +280,6 @@ const Success = () => {
                       <p className="text-sm opacity-90 mt-2">Click to reveal!</p>
                     </div>
                   </div>
-
-                  {/* Back of Card */}
                   <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg flex items-center justify-center backface-hidden rotate-y-180">
                     <div className="text-center text-white">
                       <div className="text-2xl mb-2">🎉</div>
@@ -276,7 +289,6 @@ const Success = () => {
                   </div>
                 </div>
               </div>
-
               <p className="text-center text-sm text-gray-500">
                 {isFlipped ? "Your coupon has been revealed!" : "Click the card above to flip it"}
               </p>
@@ -305,7 +317,7 @@ const Success = () => {
               <p className="text-sm text-gray-500 mb-6">Use this code on your next purchase</p>
               <button
                 onClick={() => setShowScratchCard(false)}
-                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2.5 px-6 rounded-lg text-sm font-medium hover:from-amber-600 hover:to-amber-700 transition transform hover:scale-105 w-full"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2 px-6 rounded-lg text-sm font-medium hover:from-amber-600 hover:to-amber-700 transition transform hover:scale-105 w-full"
               >
                 Continue to Bill
               </button>
@@ -313,7 +325,6 @@ const Success = () => {
           )}
         </div>
       )}
-      {/* Hidden iframe for bill printing */}
       <iframe
         ref={iframeRef}
         title="invoice-print"

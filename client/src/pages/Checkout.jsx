@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Gem, Sparkles, ShieldCheck } from 'lucide-react';
+import Footer from '../components/Footer';
 
 const Checkout = () => {
   const [summary, setSummary] = useState(null);
@@ -224,31 +225,7 @@ const Checkout = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 mt-auto">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-center md:text-left mb-6 md:mb-0">
-              <h3 className="text-2xl font-light tracking-[0.3em] mb-2">KATENKELLY</h3>
-              <p className="text-gray-400 text-sm max-w-md">
-                Crafting timeless elegance since our inception, KATENKELLY represents the perfect harmony between traditional artistry and contemporary design.
-              </p>
-            </div>
-            <div className="text-center md:text-right">
-              <p className="text-gray-400 text-sm mb-2">Need assistance with your order?</p>
-              <div className="flex justify-center md:justify-end items-center">
-                <a href="/contact" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center">
-                  <span className="mr-2">Contact our concierge</span>
-                  <ArrowLeft className="w-4 h-4 transform rotate-180" />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400 text-xs">
-            <p>© {new Date().getFullYear()} KATENKELLY. All rights reserved. Crafted with love in India.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

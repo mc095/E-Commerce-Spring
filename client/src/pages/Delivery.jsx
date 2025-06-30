@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Truck, Home, Phone, MapPin, ShieldCheck, Gift, Sparkles, Gem } from 'lucide-react';
+import Footer from "../components/Footer";
 
 const Delivery = () => {
   const navigate = useNavigate();
@@ -213,30 +214,7 @@ const Delivery = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-6 mt-auto">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-center md:text-left mb-4 md:mb-0">
-              <h3 className="text-xl font-light tracking-[0.2em] mb-1">KATENKELLY</h3>
-              <p className="text-gray-400 text-xs max-w-md">
-                Crafting timeless elegance since our inception, KATENKELLY represents perfect harmony between traditional and contemporary design.
-              </p>
-            </div>
-            <div className="text-center md:text-right">
-              <p className="text-gray-400 text-xs mb-1">Questions about your delivery?</p>
-              <div className="flex justify-center md:justify-end items-center">
-                <a href="/contact" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center text-xs">
-                  <Phone className="w-3 h-3 mr-1" />
-                  <span>Contact our delivery specialists</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-4 pt-4 text-center text-gray-400 text-[10px]">
-            <p>© {new Date().getFullYear()} KATENKELLY. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
