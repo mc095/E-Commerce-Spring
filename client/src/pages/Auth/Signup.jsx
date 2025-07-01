@@ -43,7 +43,7 @@ const Signup = () => {
         return;
       }
       try {
-        const res = await fetch(`http://localhost:8080/api/products?search=${encodeURIComponent(searchInput)}`);
+        const res = await fetch(`/api/products?search=${encodeURIComponent(searchInput)}`);
         if (res.ok) {
           const data = await res.json();
           setSearchResults(data.slice(0, 5));
@@ -61,7 +61,7 @@ const Signup = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/cart/${email}`);
+        const res = await fetch(`/api/cart/${email}`);
         if (!res.ok) return;
         const data = await res.json();
         setCartItems(data.productIds || []);
@@ -108,7 +108,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:8080/api/auth/signup', {
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, username, profilePic }),
